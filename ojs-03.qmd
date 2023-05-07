@@ -1,0 +1,250 @@
+---
+title: "03 COMPARE UNITS"
+format: 
+    html:
+        fontsize: 0.95em
+        mainfont: 'Fira Mono'
+        echo: false
+        code-tools: true
+        page-layout: custom
+        toc: false
+        margin-left: 35px
+        margin-right: 35px
+---
+
+```{ojs .hidden}
+ojs_data_03 = FileAttachment('data-03.csv').csv({typed: true})
+```
+
+::: {.grid}
+
+::: {.g-col-2}
+
+## Controls
+
+Control the appearance here.
+
+```{ojs}
+viewof sche = Inputs.select(["Greys", "Turbo", "Viridis", "Warm"], {multiple: false, label: "Colors:", value: "Greys"})
+
+viewof binWidth = Inputs.range([1, 40], {value: 20, label: "Bin:", step: 1})
+```
+
+:::
+
+::: {.g-col-5}
+
+## SBT plot: unit 1
+
+```{ojs}
+// select soil unit
+viewof filt_unit_01 = Inputs.select(ojs_data_03.map(d => d.soil_unit), {multiple: false, label: "Soil unit 1:", sort: true, unique: true, value: "Clay 1"})
+
+ojs_data_03_filt_01 = ojs_data_03.filter(function(func_unit_filt) {return filt_unit_01.includes(func_unit_filt.soil_unit);})
+```
+
+::: {.panel-tabset}
+
+### Hex
+
+```{ojs}
+Plot.plot({
+  style: {
+    fontSize: 14,
+    fontWeight: 450,
+  },
+    x: {
+        domain: [1e-1, 1e1],
+        tickFormat: ",",
+        ticks: 3,
+        label:"Fr",
+        type: "log"
+    },
+    y: {
+        domain: [1e0, 1e3],
+        tickFormat: ",",
+        ticks: 4,
+        label:"Qt",
+        type: "log"
+    },
+    marginLeft: 50,
+    marginRight: 25,
+    marginTop: 25,
+    marginBottom: 25,
+    width: 700,
+    height: 675,
+    grid: true,
+    color: {scheme: sche, legend: true, label: "No. dots"},
+  marks: [
+    Plot.frame(),
+    //Plot.hexgrid(),
+    Plot.dot(
+      ojs_data_03_filt_01,
+      Plot.hexbin({r: "count", fill: "count"},
+      {
+        x: "Fr", 
+        y: "Qt",
+        fill: "currentColor",
+        binWidth
+     }
+      )
+    )
+  ]
+})
+```
+
+### Dot
+
+```{ojs}
+Plot.plot({
+  style: {
+    fontSize: 14,
+    fontWeight: 450,
+  },
+    x: {
+        domain: [1e-1, 1e1],
+        tickFormat: ",",
+        ticks: 3,
+        label:"Fr",
+        type: "log"
+    },
+    y: {
+        domain: [1e0, 1e3],
+        tickFormat: ",",
+        ticks: 4,
+        label:"Qt",
+        type: "log"
+    },
+    marginLeft: 50,
+    marginRight: 25,
+    marginTop: 25,
+    marginBottom: 25,
+    width: 700,
+    height: 675,
+    grid: true,
+    color: {legend: true, label: "Ic"},
+  marks: [
+    Plot.frame(),
+    Plot.dot(ojs_data_03_filt_01,
+    {
+      x: "Fr", 
+      y: "Qt",
+      fill: "Ic"
+    })
+  ]
+})
+```
+
+:::
+
+:::
+
+::: {.g-col-5}
+
+## SBT plot: unit 2
+
+```{ojs}
+// select soil unit
+viewof filt_unit_02 = Inputs.select(ojs_data_03.map(d => d.soil_unit), {multiple: false, label: "Soil unit 2:", sort: true, unique: true, value: "Sand 1"})
+
+ojs_data_03_filt_02 = ojs_data_03.filter(function(func_unit_filt) {return filt_unit_02.includes(func_unit_filt.soil_unit);})
+```
+
+::: {.panel-tabset}
+
+### Hex
+
+```{ojs}
+Plot.plot({
+  style: {
+    fontSize: 14,
+    fontWeight: 450,
+  },
+    x: {
+        domain: [1e-1, 1e1],
+        tickFormat: ",",
+        ticks: 3,
+        label:"Fr",
+        type: "log"
+    },
+    y: {
+        domain: [1e0, 1e3],
+        tickFormat: ",",
+        ticks: 4,
+        label:"Qt",
+        type: "log"
+    },
+    marginLeft: 50,
+    marginRight: 25,
+    marginTop: 25,
+    marginBottom: 25,
+    width: 700,
+    height: 675,
+    grid: true,
+    color: {scheme: sche, legend: true, label: "No. dots"},
+  marks: [
+    Plot.frame(),
+    //Plot.hexgrid(),
+    Plot.dot(
+      ojs_data_03_filt_02,
+      Plot.hexbin({r: "count", fill: "count"},
+      {
+        x: "Fr", 
+        y: "Qt",
+        binWidth
+     }
+      )
+    )
+  ]
+})
+```
+
+### Dot
+
+```{ojs}
+Plot.plot({
+  style: {
+    fontSize: 14,
+    fontWeight: 450,
+  },
+    x: {
+        domain: [1e-1, 1e1],
+        tickFormat: ",",
+        ticks: 3,
+        label:"Fr",
+        type: "log"
+    },
+    y: {
+        domain: [1e0, 1e3],
+        tickFormat: ",",
+        ticks: 4,
+        label:"Qt",
+        type: "log"
+    },
+    marginLeft: 50,
+    marginRight: 25,
+    marginTop: 25,
+    marginBottom: 25,
+    width: 700,
+    height: 675,
+    grid: true,
+    color: {legend: true, label: "Ic"},
+  marks: [
+    Plot.frame(),
+    Plot.dot(ojs_data_03_filt_02,
+    {
+      x: "Fr", 
+      y: "Qt",
+      fill: "Ic"
+    })
+  ]
+})
+```
+
+:::
+
+:::
+
+:::
+
+## End.
